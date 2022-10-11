@@ -2,15 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo" scope="request"/>
+    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Edit Meal</title>
+    <title>${meal.description eq null?"Add meal":"Edit meal"}</title>
 </head>
 <body>
 <section>
     <h2><a href="meals">Home</a></h2>
     <hr>
-    <h1>Edit meal</h1>
+    <h1>${meal.description eq null?"Add meal":"Edit meal"}</h1>
     <form method="post" action="meals" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="id" value="${meal.id}">
         <p>
@@ -28,7 +28,7 @@
         <p>
             <tr>
                 <td>Calories</td>
-                <td><input required type="text" name="calories" size="25" value="${meal.calories}"></td>
+                <td><input required type="number" name="calories" size="25" value="${meal.calories}"></td>
             </tr>
         </p>
         <hr>

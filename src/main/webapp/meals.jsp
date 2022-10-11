@@ -1,3 +1,4 @@
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -20,7 +21,7 @@
         <button type="submit">Add</button>
     </a>
     <hr>
-    <table border="1" cellpadding="8" cellspacing="0">
+    <table border="1" cellpadding="8" cellspacing="0" title="Meals list">
         <tr>
             <th>Date</th>
             <th>Description</th>
@@ -28,12 +29,13 @@
             <th></th>
             <th></th>
         </tr>
+        <%DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm");%>
         <c:forEach items="${meals}" var="meal">
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
             <c:choose>
                 <c:when test="${meal.excess}">
                     <tr class="red">
-                        <td>${meal.dateTime}</td>
+                        <td><%=meal.getDateTime().format(dateTimeFormatter)%></td>
                         <td>${meal.description}</td>
                         <td>${meal.calories}</td>
                         <td><a href="meals?id=${meal.id}&action=delete">Delete</a></td>
@@ -42,7 +44,7 @@
                 </c:when>
                 <c:when test="${!meal.excess}">
                     <tr class="green">
-                        <td>${meal.dateTime}</td>
+                        <td><%=meal.getDateTime().format(dateTimeFormatter)%></td>
                         <td>${meal.description}</td>
                         <td>${meal.calories}</td>
                         <td><a href="meals?id=${meal.id}&action=delete">Delete</a></td>
