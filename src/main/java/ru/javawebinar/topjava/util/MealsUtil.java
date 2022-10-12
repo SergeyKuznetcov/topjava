@@ -1,9 +1,12 @@
 package ru.javawebinar.topjava.util;
 
+import ru.javawebinar.topjava.dao.MemoryMealsStorage;
+import ru.javawebinar.topjava.dao.Storage;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
-import ru.javawebinar.topjava.util.filterStrategy.BetweenStartEndTimeFiltering;
-import ru.javawebinar.topjava.util.filterStrategy.FilterStrategy;
+import ru.javawebinar.topjava.util.filter.BetweenStartEndTimeFiltering;
+import ru.javawebinar.topjava.util.filter.FilterStrategy;
+import ru.javawebinar.topjava.util.filter.NoFiltering;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,24 +18,33 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MealsUtil {
+    private static final Storage storage = new MemoryMealsStorage();
 
     public static void main(String[] args) {
-        List<Meal> meals = getTestMeals();
+        List<Meal> meals = storage.getAll();
 
-        List<MealTo> mealsTo = createTos(meals, 2000, new BetweenStartEndTimeFiltering(LocalTime.of(7, 0), LocalTime.of(12, 0)));
+        List<MealTo> mealsTo = createTos(meals, 2000);
         mealsTo.forEach(System.out::println);
     }
 
     private static MealTo createTo(Meal meal, boolean excess) {
-        return new MealTo(meal.getId() == null ? 0 : meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 
-    public static List<MealTo> createTos(List<Meal> mealList, int caloriesPerDay, FilterStrategy filterStrategy) {
+    public static List<MealTo> createTos(List<Meal> mealList, int caloriesPerDay) {
+        return getFilteredMealsTo(mealList, caloriesPerDay, new NoFiltering());
+    }
+
+    public static List<MealTo> createTos(List<Meal> mealList, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
+        return getFilteredMealsTo(mealList, caloriesPerDay, new BetweenStartEndTimeFiltering(startTime, endTime));
+    }
+
+    private static List<MealTo> getFilteredMealsTo(List<Meal> mealList, int caloriesPerDay, FilterStrategy filterStrategy) {
         Map<LocalDate, Integer> caloriesSumByDate = mealList.stream()
                 .collect(Collectors.toMap(Meal::getDate, Meal::getCalories, Integer::sum));
-        return filterStrategy.filter(mealList.stream()
+        return filterStrategy.filter(mealList).stream()
                 .map(meal -> createTo(meal, caloriesPerDay < caloriesSumByDate.get(meal.getDate())))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     public static List<Meal> getTestMeals() {

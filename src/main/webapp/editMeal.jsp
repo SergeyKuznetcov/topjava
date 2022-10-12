@@ -10,7 +10,7 @@
 <section>
     <h2><a href="meals">Home</a></h2>
     <hr>
-    <h1>${meal.description eq null?"Add meal":"Edit meal"}</h1>
+    <h1>${meal.id eq null?"Add meal":"Edit meal"}</h1>
     <form method="post" action="meals" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="id" value="${meal.id}">
         <p>

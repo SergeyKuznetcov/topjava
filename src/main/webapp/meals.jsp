@@ -17,10 +17,14 @@
 </head>
 <body>
 <section>
-    <a href="meals?action=add">
-        <button type="submit">Add</button>
-    </a>
+    <h2><a href="meals">Home</a></h2>
     <hr>
+    <h1>Meals</h1>
+    <p>
+        <a href="meals?action=add">
+            <button type="submit">Add</button>
+        </a>
+    </p>
     <table border="1" cellpadding="8" cellspacing="0" title="Meals list">
         <tr>
             <th>Date</th>
@@ -29,29 +33,15 @@
             <th></th>
             <th></th>
         </tr>
-        <%DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm");%>
         <c:forEach items="${meals}" var="meal">
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
-            <c:choose>
-                <c:when test="${meal.excess}">
-                    <tr class="red">
-                        <td><%=meal.getDateTime().format(dateTimeFormatter)%></td>
-                        <td>${meal.description}</td>
-                        <td>${meal.calories}</td>
-                        <td><a href="meals?id=${meal.id}&action=delete">Delete</a></td>
-                        <td><a href="meals?id=${meal.id}&action=edit">Edit</a></td>
-                    </tr>
-                </c:when>
-                <c:when test="${!meal.excess}">
-                    <tr class="green">
-                        <td><%=meal.getDateTime().format(dateTimeFormatter)%></td>
-                        <td>${meal.description}</td>
-                        <td>${meal.calories}</td>
-                        <td><a href="meals?id=${meal.id}&action=delete">Delete</a></td>
-                        <td><a href="meals?id=${meal.id}&action=edit">Edit</a></td>
-                    </tr>
-                </c:when>
-            </c:choose>
+            <tr class="${meal.excess?"red":"green"}">
+                <td>${meal.dateTime.format(formatter)}</td>
+                <td>${meal.description}</td>
+                <td>${meal.calories}</td>
+                <td><a href="meals?id=${meal.id}&action=delete">Delete</a></td>
+                <td><a href="meals?id=${meal.id}&action=edit">Edit</a></td>
+            </tr>
         </c:forEach>
     </table>
 </section>

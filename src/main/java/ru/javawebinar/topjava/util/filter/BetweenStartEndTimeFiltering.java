@@ -1,6 +1,6 @@
-package ru.javawebinar.topjava.util.filterStrategy;
+package ru.javawebinar.topjava.util.filter;
 
-import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.TimeUtil;
 
 import java.time.LocalTime;
@@ -17,9 +17,9 @@ public class BetweenStartEndTimeFiltering implements FilterStrategy {
     }
 
     @Override
-    public List<MealTo> filter(List<MealTo> mealTos) {
-        return mealTos.stream()
-                .filter(mealTo -> TimeUtil.isBetweenHalfOpen(mealTo.getDateTime().toLocalTime(), startTime, endTime))
+    public List<Meal> filter(List<Meal> meals) {
+        return meals.stream()
+                .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime))
                 .collect(Collectors.toList());
     }
 }
