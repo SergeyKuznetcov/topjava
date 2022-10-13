@@ -3,7 +3,8 @@ package ru.javawebinar.topjava.util.filter;
 import ru.javawebinar.topjava.model.Meal;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface FilterStrategy {
-    List<Meal> filter(List<Meal> meals);
+    Stream<Meal> filter(List<Meal> meals);
 }

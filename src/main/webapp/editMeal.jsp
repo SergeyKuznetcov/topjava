@@ -4,7 +4,7 @@
 <head>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>${meal.description eq null?"Add meal":"Edit meal"}</title>
+    <title>${meal.id eq null?"Add meal":"Edit meal"}</title>
 </head>
 <body>
 <section>

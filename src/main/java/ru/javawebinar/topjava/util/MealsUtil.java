@@ -42,7 +42,7 @@ public class MealsUtil {
     private static List<MealTo> getFilteredMealsTo(List<Meal> mealList, int caloriesPerDay, FilterStrategy filterStrategy) {
         Map<LocalDate, Integer> caloriesSumByDate = mealList.stream()
                 .collect(Collectors.toMap(Meal::getDate, Meal::getCalories, Integer::sum));
-        return filterStrategy.filter(mealList).stream()
+        return filterStrategy.filter(mealList)
                 .map(meal -> createTo(meal, caloriesPerDay < caloriesSumByDate.get(meal.getDate())))
                 .collect(Collectors.toList());
     }

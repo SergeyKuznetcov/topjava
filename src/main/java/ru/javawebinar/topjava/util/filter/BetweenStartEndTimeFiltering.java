@@ -5,7 +5,7 @@ import ru.javawebinar.topjava.util.TimeUtil;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BetweenStartEndTimeFiltering implements FilterStrategy {
     private final LocalTime startTime;
@@ -17,9 +17,8 @@ public class BetweenStartEndTimeFiltering implements FilterStrategy {
     }
 
     @Override
-    public List<Meal> filter(List<Meal> meals) {
+    public Stream<Meal> filter(List<Meal> meals) {
         return meals.stream()
-                .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime))
-                .collect(Collectors.toList());
+                .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime));
     }
 }

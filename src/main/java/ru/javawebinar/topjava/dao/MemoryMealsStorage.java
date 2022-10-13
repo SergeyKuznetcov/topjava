@@ -14,7 +14,7 @@ public class MemoryMealsStorage implements Storage {
     private final AtomicInteger counter;
 
     public MemoryMealsStorage() {
-        this.storage = new ConcurrentHashMap<>();
+        storage = new ConcurrentHashMap<>();
         counter = new AtomicInteger(0);
         saveTestValues();
     }
@@ -40,8 +40,7 @@ public class MemoryMealsStorage implements Storage {
 
     @Override
     public Meal update(Meal meal) {
-        storage.replace(meal.getId(), meal);
-        return meal;
+        return storage.replace(meal.getId(), meal) == null ? null : meal;
     }
 
     @Override
