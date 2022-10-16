@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.to.MealTo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,11 +28,27 @@ public class MealsUtil {
     );
 
     public static List<MealTo> getTos(Collection<Meal> meals, int caloriesPerDay) {
-        return filterByPredicate(meals, caloriesPerDay, meal -> true);
+        return filterByPredicate(meals, caloriesPerDay, getPredicate(null, null));
     }
 
-    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
-        return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
+    public static List<MealTo> getFilteredByTimeTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
+        return filterByPredicate(meals, caloriesPerDay, getPredicate(startTime, endTime));
+    }
+
+    private static Predicate<Meal> getPredicate(LocalTime startTime, LocalTime endTime) {
+        if (startTime != null) {
+            if (endTime == null) {
+                return meal -> DateTimeUtil.isAfterTime(meal.getTime(), startTime);
+            } else {
+                return meal -> DateTimeUtil.isBetweenTimeHalfOpen(meal.getTime(), startTime, endTime);
+            }
+        } else {
+            if (endTime == null) {
+                return meal -> true;
+            } else {
+                return meal -> DateTimeUtil.isBeforeTime(meal.getTime(), endTime);
+            }
+        }
     }
 
     private static List<MealTo> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
