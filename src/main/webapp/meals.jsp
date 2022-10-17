@@ -20,12 +20,12 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
-    <form method="post" action="meals">
-        <input hidden name="filter" type="text" value="on">
-        <input name="startDate" type="date">
-        <input name="endDate" type="date">
-        <input name="startTime" type="time">
-        <input name="endTime" type="time">
+    <form method="get" action="meals">
+        <input hidden name="action" type="text" value="filter">
+        <input name="startDate" type="date" value="${startDate}">
+        <input name="endDate" type="date" value="${endDate}">
+        <input name="startTime" type="time" value="${startTime}">
+        <input name="endTime" type="time" value="${endTime}">
         <button type="submit">Filtering</button>
     </form>
     <hr/>

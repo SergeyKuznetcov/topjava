@@ -5,12 +5,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class SpringMain {
     public static void main(String[] args) {
@@ -21,7 +24,10 @@ public class SpringMain {
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
             mealRestController.create(new Meal(null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "meal", 1500));
-            System.out.println(mealRestController.getAll());
+            mealRestController.getAll().stream().forEach(System.out::println);
+            mealRestController.getAll().stream()
+                    .filter(mealTo -> DateTimeUtil.isBetweenTimeHalfOpenDateExclusive(mealTo.getDateTime().toLocalTime(), LocalTime.of(10, 0), LocalTime.of(14,0)))
+                    .forEach(System.out::println);
         }
     }
 }

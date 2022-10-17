@@ -39,24 +39,6 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String userId = request.getParameter("userId");
-        if (userId != null) {
-            SecurityUtil.setAuthUserId(Integer.parseInt(userId));
-            response.sendRedirect("meals");
-            return;
-        }
-        if (request.getParameter("filter") != null) {
-            StringBuilder stringBuilder = new StringBuilder("meals?filter=on&startDate=");
-            stringBuilder.append(request.getParameter("startDate"));
-            stringBuilder.append("&endDate=");
-            stringBuilder.append(request.getParameter("endDate"));
-            stringBuilder.append("&startTime=");
-            stringBuilder.append(request.getParameter("startTime"));
-            stringBuilder.append("&endTime=");
-            stringBuilder.append(request.getParameter("endTime"));
-            response.sendRedirect(stringBuilder.toString());
-            return;
-        }
         String id = request.getParameter("id");
         Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
                 LocalDateTime.parse(request.getParameter("dateTime")),
@@ -90,19 +72,24 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
+            case "filter":
+                log.info("getAllFiltered");
+                LocalDate startDate = checkAndParseDate(request.getParameter("startDate"));
+                LocalDate endDate = checkAndParseDate(request.getParameter("endDate"));
+                LocalTime startTime = checkAndParseTime(request.getParameter("startTime"));
+                LocalTime endTime = checkAndParseTime(request.getParameter("endTime"));
+                request.setAttribute("meals",
+                        mealRestController.getAllFiltered(startDate, endDate, startTime, endTime));
+                request.setAttribute("startDate", startDate);
+                request.setAttribute("endDate", endDate);
+                request.setAttribute("startTime", startTime);
+                request.setAttribute("endTime", endTime);
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
+                break;
             case "all":
             default:
-                if (request.getParameter("filter") != null) {
-                    log.info("getAllFiltered");
-                    request.setAttribute("meals",
-                            mealRestController.getAllFiltered(checkAndParseDate(request.getParameter("startDate")),
-                                    checkAndParseDate(request.getParameter("endDate")),
-                                    checkAndParseTime(request.getParameter("startTime")),
-                                    checkAndParseTime(request.getParameter("endTime"))));
-                } else {
-                    log.info("getAll");
-                    request.setAttribute("meals", mealRestController.getAll());
-                }
+                log.info("getAll");
+                request.setAttribute("meals", mealRestController.getAll());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
