@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class SpringMain {
     public static void main(String[] args) {
@@ -26,7 +25,7 @@ public class SpringMain {
             mealRestController.create(new Meal(null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "meal", 1500));
             mealRestController.getAll().stream().forEach(System.out::println);
             mealRestController.getAll().stream()
-                    .filter(mealTo -> DateTimeUtil.isBetweenTimeHalfOpenDateExclusive(mealTo.getDateTime().toLocalTime(), LocalTime.of(10, 0), LocalTime.of(14,0)))
+                    .filter(mealTo -> DateTimeUtil.isBetweenDateOrTime(mealTo.getDateTime().toLocalTime(), LocalTime.of(10, 0), LocalTime.of(20, 0), true))
                     .forEach(System.out::println);
         }
     }

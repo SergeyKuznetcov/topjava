@@ -22,10 +22,10 @@
     <hr/>
     <form method="get" action="meals">
         <input hidden name="action" type="text" value="filter">
-        <input name="startDate" type="date" value="${startDate}">
-        <input name="endDate" type="date" value="${endDate}">
-        <input name="startTime" type="time" value="${startTime}">
-        <input name="endTime" type="time" value="${endTime}">
+        <input name="startDate" type="date" value="${param.get("startDate")}">
+        <input name="endDate" type="date" value="${param.get("endDate")}">
+        <input name="startTime" type="time" value="${param.get("startTime")}">
+        <input name="endTime" type="time" value="${param.get("endTime")}">
         <button type="submit">Filtering</button>
     </form>
     <hr/>

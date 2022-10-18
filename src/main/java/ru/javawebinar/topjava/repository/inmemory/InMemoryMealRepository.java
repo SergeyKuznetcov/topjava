@@ -7,13 +7,9 @@ import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Repository
@@ -22,22 +18,22 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.mealsUser1.forEach(meal -> save(meal, 1));
-        MealsUtil.mealsUser2.forEach(meal -> save(meal, 2));
+        MealsUtil.user1Meals.forEach(meal -> save(meal, 1));
+        MealsUtil.user2Meals.forEach(meal -> save(meal, 2));
     }
 
     @Override
     public Meal save(Meal meal, int userId) {
+        Map<Integer, Meal> userMeals = repository.get(userId);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
-            meal.setUserId(userId);
-            repository.putIfAbsent(userId, new ConcurrentHashMap<>());
+            if (userMeals == null) {
+                repository.putIfAbsent(userId, new ConcurrentHashMap<>());
+            }
             repository.get(userId).put(meal.getId(), meal);
             return meal;
         }
-        Map<Integer, Meal> userMeals = repository.get(userId);
         if (userMeals != null) {
-            meal.setUserId(userId);
             return userMeals.computeIfPresent(meal.getId(), (id, oldVal) -> meal);
         }
         return null;
@@ -73,8 +69,8 @@ public class InMemoryMealRepository implements MealRepository {
 
     private List<Meal> getAllFilteredByDate(int userId, LocalDate startDate, LocalDate endDate) {
         Map<Integer, Meal> userMeals = repository.get(userId);
-        return userMeals == null ? new ArrayList<>() : userMeals.values().stream()
-                .filter(meal -> DateTimeUtil.isBetweenTimeHalfOpenDateExclusive(meal.getDate(), startDate, endDate))
+        return userMeals == null ? Collections.EMPTY_LIST : userMeals.values().stream()
+                .filter(meal -> DateTimeUtil.isBetweenDateOrTime(meal.getDate(), startDate, endDate, false))
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
     }
