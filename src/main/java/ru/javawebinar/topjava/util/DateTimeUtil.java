@@ -6,11 +6,11 @@ import java.time.format.DateTimeFormatter;
 public class DateTimeUtil {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public static <T extends Comparable<T>> boolean isBetweenDateOrTime(T ldt, T start, T end, boolean exclusive) {
-        return start == null ? (end == null || isBefore(ldt, end, exclusive)) : (end == null ? isAfter(ldt, start) : isBetween(ldt, start, end, exclusive));
+    public static <T extends Comparable<T>> boolean isBetween(T checkedValue, T start, T end, boolean exclusive) {
+        return start == null ? (end == null || isBefore(checkedValue, end, exclusive)) : (end == null ? isAfter(checkedValue, start) : isBetweenStartEnd(checkedValue, start, end, exclusive));
     }
 
-    private static <T extends Comparable<T>> boolean isBetween(T ldt, T start, T end, boolean exclusive) {
+    private static <T extends Comparable<T>> boolean isBetweenStartEnd(T ldt, T start, T end, boolean exclusive) {
         return isAfter(ldt, start) && isBefore(ldt, end, exclusive);
     }
 

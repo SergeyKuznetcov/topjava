@@ -47,7 +47,7 @@ public class MealsUtil {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(Collectors.toMap(Meal::getDate, Meal::getCalories, Integer::sum));
         return meals.stream()
-                .filter(meal -> DateTimeUtil.isBetweenDateOrTime(meal.getTime(), startTime, endTime, true))
+                .filter(meal -> DateTimeUtil.isBetween(meal.getTime(), startTime, endTime, true))
                 .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }

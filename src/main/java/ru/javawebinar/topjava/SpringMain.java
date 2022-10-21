@@ -25,7 +25,7 @@ public class SpringMain {
             mealRestController.create(new Meal(null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "meal", 1500));
             mealRestController.getAll().stream().forEach(System.out::println);
             mealRestController.getAll().stream()
-                    .filter(mealTo -> DateTimeUtil.isBetweenDateOrTime(mealTo.getDateTime().toLocalTime(), LocalTime.of(10, 0), LocalTime.of(20, 0), true))
+                    .filter(mealTo -> DateTimeUtil.isBetween(mealTo.getDateTime().toLocalTime(), LocalTime.of(10, 0), LocalTime.of(20, 0), true))
                     .forEach(System.out::println);
         }
     }
