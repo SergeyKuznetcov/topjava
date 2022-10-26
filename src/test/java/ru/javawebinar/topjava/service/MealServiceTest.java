@@ -18,6 +18,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
+import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
+import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 
 @ContextConfiguration({
@@ -74,17 +76,17 @@ public class MealServiceTest {
         List<Meal> filteredByStartEndDate = service.getBetweenInclusive(startDate, endDate, USER_ID);
         List<Meal> filteredByStartDate = service.getBetweenInclusive(startDate, null, USER_ID);
         List<Meal> filteredByEndDate = service.getBetweenInclusive(null, LocalDate.of(2022, 4, 9), ADMIN_ID);
-        assertMatch(filteredByStartEndDate, userMeal2, userMeal3, userMeal4);
-        assertMatch(filteredByStartDate, userMeal2, userMeal3, userMeal4, userMeal5);
-        assertMatch(filteredByEndDate, adminMeal1, adminMeal2, adminMeal3);
+        assertMatch(filteredByStartEndDate, userMeal4, userMeal3, userMeal2);
+        assertMatch(filteredByStartDate, userMeal5, userMeal4, userMeal3, userMeal2);
+        assertMatch(filteredByEndDate, adminMeal3, adminMeal2, adminMeal1);
     }
 
     @Test
     public void getAll() {
         List<Meal> userMeals = service.getAll(USER_ID);
         List<Meal> adminMeals = service.getAll(ADMIN_ID);
-        assertMatch(userMeals, userMeal1, userMeal2, userMeal3, userMeal4, userMeal5);
-        assertMatch(adminMeals, adminMeal1, adminMeal2, adminMeal3, adminMeal4);
+        assertMatch(userMeals, userMeal5, userMeal4, userMeal3, userMeal2, userMeal1);
+        assertMatch(adminMeals, adminMeal4, adminMeal3, adminMeal2, adminMeal1);
     }
 
     @Test
@@ -118,8 +120,6 @@ public class MealServiceTest {
 
     @Test
     public void duplicatedDateTimeCreate() {
-        assertThrows(DataAccessException.class, () ->
-                service.create(new Meal(userMeal1.getDateTime(),
-                        "Duplicate", 500), USER_ID));
+        assertThrows(DataAccessException.class, () -> service.create(new Meal(userMeal1.getDateTime(), "Duplicate", 500), USER_ID));
     }
 }
