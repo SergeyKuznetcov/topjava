@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,7 +29,9 @@ public class JpaMealRepository implements MealRepository {
             em.persist(meal);
             return meal;
         } else {
-            return em.createNamedQuery(Meal.UPDATE)
+            Query query = em.createQuery("UPDATE Meal m SET m.dateTime=?1, m.description=?2, m.calories=?3" +
+                    "WHERE m.id=?4 AND m.user.id=?5");
+            return query
                     .setParameter(1, meal.getDateTime())
                     .setParameter(2, meal.getDescription())
                     .setParameter(3, meal.getCalories())

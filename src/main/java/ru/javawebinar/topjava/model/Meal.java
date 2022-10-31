@@ -28,21 +28,21 @@ public class Meal extends AbstractBaseEntity {
     public static final String BETWEEN_HALF_OPEN = "Meal.getBetweenHalfOpen";
     public static final String UPDATE = "Meal.update";
 
-    @Column(name = "date_time", nullable = false, columnDefinition = "timestamp default now()")
+    @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
     @NotBlank
-    @Size(max = 128)
+    @Size(min = 2, max = 120)
     private String description;
 
-    @Column(name = "calories", nullable = false, columnDefinition = "int default 1000")
-    @Range(max = 10000)
+    @Column(name = "calories", nullable = false)
+    @Range(min = 10, max = 5000)
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @NotNull
     private User user;
 
