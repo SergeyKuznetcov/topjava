@@ -11,11 +11,11 @@ import java.util.concurrent.TimeUnit;
 public class TimeLogger extends ExternalResource {
     private static final Logger log = LoggerFactory.getLogger("testsTime");
     private static final StringBuilder result = new StringBuilder();
-    private static final String LINE = repeatString("_", 108);
+    private static final String LINE = repeatString("_", 111);
     public static final Stopwatch TEST_TIME = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            String testResult = String.format("%-100s %8d", description.getDisplayName(), TimeUnit.NANOSECONDS.toMillis(nanos));
+            String testResult = String.format("%-100s %8d ms", description.getDisplayName(), TimeUnit.NANOSECONDS.toMillis(nanos));
             result.append(testResult).append("\n");
             log.info(testResult);
         }
@@ -32,7 +32,7 @@ public class TimeLogger extends ExternalResource {
             log.info("\n" +
                     LINE +
                     "\nTest name" +
-                    repeatString(" ", 91) +
+                    repeatString(" ", 94) +
                     "Time, ms\n" +
                     LINE +
                     "\n" +
