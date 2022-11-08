@@ -16,13 +16,12 @@ import java.util.List;
 public class DataJpaMealRepository implements MealRepository {
 
     private final CrudMealRepository crudRepository;
+    private final CrudUserRepository crudUserRepository;
 
-    public DataJpaMealRepository(CrudMealRepository crudRepository) {
+    public DataJpaMealRepository(CrudMealRepository crudRepository, CrudUserRepository crudUserRepository) {
         this.crudRepository = crudRepository;
+        this.crudUserRepository = crudUserRepository;
     }
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Modifying
     @Transactional
@@ -31,7 +30,7 @@ public class DataJpaMealRepository implements MealRepository {
         if (!meal.isNew() && get(meal.getId(), userId) == null) {
             return null;
         }
-        meal.setUser(entityManager.getReference(User.class, userId));
+        meal.setUser(crudUserRepository.getReferenceById(userId));
         return crudRepository.save(meal);
     }
 
