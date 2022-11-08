@@ -7,8 +7,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -53,5 +51,16 @@ public class DataJpaMealRepository implements MealRepository {
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         return crudRepository.getBetween(userId, startDateTime, endDateTime);
+    }
+
+    @Transactional
+    @Override
+    public Meal getMealWithUser(int id, int userId) {
+        Meal meal = crudRepository.findById(id).orElse(null);
+        if (meal != null){
+            User user = crudUserRepository.findById(userId).orElse(null);
+            meal.setUser(user);
+        }
+        return meal;
     }
 }

@@ -14,11 +14,13 @@ import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
+import static ru.javawebinar.topjava.UserTestData.user;
+import static ru.javawebinar.topjava.UserTestData.USER_MATCHER;
 
 public abstract class MealServiceTest extends ServiceTest {
 
     @Autowired
-    private MealService service;
+    protected MealService service;
 
     @Test
     public void delete() {
@@ -98,5 +100,10 @@ public abstract class MealServiceTest extends ServiceTest {
     @Test
     public void getBetweenWithNullDates() {
         MEAL_MATCHER.assertMatch(service.getBetweenInclusive(null, null, USER_ID), meals);
+    }
+
+    @Test
+    public void getMealWithUser(){
+        assertThrows(UnsupportedOperationException.class, () -> service.getMealWithUser(MEAL1_ID, USER_ID));
     }
 }

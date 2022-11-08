@@ -36,7 +36,7 @@ public abstract class JdbcMealRepository<T> implements MealRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    protected abstract <T> T getCheckedDate(LocalDateTime localDateTime);
+    protected abstract T getCheckedDate(LocalDateTime localDateTime);
 
     @Override
     public Meal save(Meal meal, int userId) {
