@@ -9,7 +9,7 @@ import java.util.Date;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
-    public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator("registered", "roles", "meals","$$_hibernate_interceptor");
+    public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator("registered", "roles", "meals", "$$_hibernate_interceptor");
 
     public static final int USER_ID = START_SEQ;
     public static final int ADMIN_ID = START_SEQ + 1;
@@ -35,7 +35,7 @@ public class UserTestData {
         return updated;
     }
 
-    public static User getWithMeal(){
+    public static User getWithMeal() {
         User userWithMeal = new User(user);
         userWithMeal.setMeals(MealTestData.meals);
         return userWithMeal;

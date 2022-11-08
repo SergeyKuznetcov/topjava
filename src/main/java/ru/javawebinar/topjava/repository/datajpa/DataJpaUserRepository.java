@@ -50,7 +50,7 @@ public class DataJpaUserRepository implements UserRepository {
     @Override
     public User getUserWithMeal(int id) {
         User user = get(id);
-        if (user != null){
+        if (user != null) {
             List<Meal> meals = crudMealRepository.getAll(id);
             user.setMeals(meals);
         }

@@ -14,8 +14,6 @@ import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
-import static ru.javawebinar.topjava.UserTestData.user;
-import static ru.javawebinar.topjava.UserTestData.USER_MATCHER;
 
 public abstract class MealServiceTest extends ServiceTest {
 
@@ -103,7 +101,7 @@ public abstract class MealServiceTest extends ServiceTest {
     }
 
     @Test
-    public void getMealWithUser(){
+    public void getMealWithUser() {
         assertThrows(UnsupportedOperationException.class, () -> service.getMealWithUser(MEAL1_ID, USER_ID));
     }
 }
