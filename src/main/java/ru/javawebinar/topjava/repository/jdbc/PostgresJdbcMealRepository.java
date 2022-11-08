@@ -4,11 +4,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.javawebinar.topjava.Profiles;
 
 import java.time.LocalDateTime;
 
-@Repository("JdbcMealRepository")
-@Profile("postgres")
+@Repository("jdbcMealRepository")
+@Profile(Profiles.POSTGRES_DB)
 public class PostgresJdbcMealRepository extends JdbcMealRepository<LocalDateTime>{
     public PostgresJdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(jdbcTemplate, namedParameterJdbcTemplate);
@@ -18,5 +19,4 @@ public class PostgresJdbcMealRepository extends JdbcMealRepository<LocalDateTime
     protected LocalDateTime getCheckedDate(LocalDateTime localDateTime) {
         return localDateTime;
     }
-
 }
