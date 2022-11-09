@@ -17,7 +17,7 @@ public class SpringMain {
     public static void main(String[] args) {
         // java 7 automatic resource management (ARM)
         GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
-        ctx.getEnvironment().setActiveProfiles("postgres", "jpa");
+        ctx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.JPA);
         ctx.load("spring/spring-app.xml", "classpath:spring/spring-db.xml");
         ctx.refresh();
         System.out.println("Bean definition names: " + Arrays.toString(ctx.getBeanDefinitionNames()));
