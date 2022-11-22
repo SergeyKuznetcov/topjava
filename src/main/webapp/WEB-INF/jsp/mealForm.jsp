@@ -6,10 +6,18 @@
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
-<br>
 <section>
+    <jsp:useBean id="action" type="java.lang.String" scope="request"/>
+    <c:choose>
+        <c:when test="${action == 'create'}">
+            <h3><spring:message code="meal.create"/></h3>
+        </c:when>
+        <c:when test="${action == 'update'}">
+            <h3><spring:message code="meal.update"/></h3>
+        </c:when>
+    </c:choose>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
-    <form method="post" action="meals">
+    <form method="post" action="<spring:url value="/meals"/>">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt><spring:message code="meal.dateTime"/>:</dt>
