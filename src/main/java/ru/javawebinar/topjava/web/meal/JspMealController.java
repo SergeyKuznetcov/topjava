@@ -38,10 +38,10 @@ public class JspMealController extends AbstractMealController {
             model.addAttribute("meals", MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()),
                     SecurityUtil.authUserCaloriesPerDay()));
         } else {
-            LocalDate startDate = params.containsKey("startDate") ? parseLocalDate(params.get("startDate")) : null;
-            LocalDate endDate = params.containsKey("endDate") ? parseLocalDate(params.get("endDate")) : null;
-            LocalTime startTime = params.containsKey("startTime") ? parseLocalTime(params.get("startTime")) : null;
-            LocalTime endTime = params.containsKey("endTime") ? parseLocalTime(params.get("endTime")) : null;
+            LocalDate startDate = parseLocalDate(params.get("startDate"));
+            LocalDate endDate = parseLocalDate(params.get("endDate"));
+            LocalTime startTime = parseLocalTime(params.get("startTime"));
+            LocalTime endTime = parseLocalTime(params.get("endTime"));
             log.info("filter date between {} and {}, time between {} and {}", startDate, endDate, startTime, endTime);
             List<Meal> filteredByDate = service.getBetweenInclusive(startDate, endDate, SecurityUtil.authUserId());
             model.addAttribute("meals", MealsUtil.getFilteredTos(filteredByDate,

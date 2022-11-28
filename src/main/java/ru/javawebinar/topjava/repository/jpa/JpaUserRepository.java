@@ -3,14 +3,11 @@ package ru.javawebinar.topjava.repository.jpa;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -67,7 +64,7 @@ public class JpaUserRepository implements UserRepository {
         List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class)
                 .setParameter(1, email)
                 .getResultList();
-        if (users.size() > 1){
+        if (users.size() > 1) {
             User user = users.get(0);
             user.setRoles(users.stream()
                     .map(user1 -> user1.getRoles().stream())
