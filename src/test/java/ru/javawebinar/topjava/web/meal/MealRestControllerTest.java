@@ -2,11 +2,12 @@ package ru.javawebinar.topjava.web.meal;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.MultiValueMapAdapter;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
@@ -30,9 +31,6 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Transactional
 class MealRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL = MealRestController.REST_URL + '/';
-
-    @Autowired
-    private Environment environment;
 
     @Autowired
     private MealService mealService;
@@ -75,7 +73,6 @@ class MealRestControllerTest extends AbstractControllerTest {
         Meal created = MEAL_MATCHER.readFromJson(action);
         int newId = created.id();
         newMeal.setId(newId);
-        Arrays.stream(environment.getActiveProfiles()).forEach(System.out::println);
         MEAL_MATCHER.assertMatch(created, newMeal);
         MEAL_MATCHER.assertMatch(mealService.get(newId, USER_ID), newMeal);
     }
@@ -93,10 +90,9 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
-        LocalDateTime start = LocalDateTime.of(2020, 1, 30, 12, 0);
-        LocalDateTime end = LocalDateTime.of(2020, 1, 30, 23, 0);
-        perform(MockMvcRequestBuilders.get(REST_URL + start.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                + "/" + end.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter")
+                .param("startDateTime", "2020-01-30T12:00:00")
+                .param("endDateTime", "2020-01-30T23:15:00"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
