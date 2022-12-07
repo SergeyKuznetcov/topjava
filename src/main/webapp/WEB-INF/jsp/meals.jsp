@@ -13,7 +13,7 @@
     <div class="container">
         <h3 class="text-center"><spring:message code="meal.title"/></h3>
         <div class="jumbotron pt-4">
-            <form method="get" action="meals/filter">
+            <form id="filter">
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm-12 col-md-3">
@@ -21,7 +21,7 @@
                                     code="meal.startDate"/></label>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <input class="form" type="date" id="startDate" name="startDate" value="${param.startDate}">
+                            <input class="form" type="date" id="startDate" name="startDate">
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                                     code="meal.endDate"/></label>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <input type="date" id="endDate" name="endDate" value="${param.endDate}">
+                            <input type="date" id="endDate" name="endDate">
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                                 code="meal.startTime"/></label>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <input type="time" id="startTime" name="startTime" value="${param.startTime}">
+                            <input type="time" id="startTime" name="startTime">
                         </div>
                     </div>
                 </div>
@@ -57,11 +57,11 @@
                                     code="meal.endTime"/></label>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <input type="time" id="endTime" name="endTime" value="${param.endTime}">
+                            <input type="time" id="endTime" name="endTime">
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" onclick="getBetween()">
+                <button type="button" class="btn btn-primary" onclick="getFiltered()">
                     <span class="fa fa-check"></span>
                     <spring:message code="meal.filter"/>
                 </button>
