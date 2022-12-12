@@ -6,10 +6,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class MealTo extends BaseTo {
+public class MealTo extends BaseTo implements Serializable {
 
     @NotNull
     private LocalDateTime dateTime;
@@ -20,13 +21,12 @@ public class MealTo extends BaseTo {
 
     @NotNull
     @Range(min = 10, max = 5000)
-    private int calories;
+    private Integer calories;
 
-    @NotNull
-    private boolean excess;
+    private Boolean excess;
 
     @ConstructorProperties({"id", "dateTime", "description", "calories", "excess"})
-    public MealTo(Integer id, LocalDateTime dateTime, String description, int calories, boolean excess) {
+    public MealTo(Integer id, LocalDateTime dateTime, String description, Integer calories, Boolean excess) {
         super(id);
         this.dateTime = dateTime;
         this.description = description;
@@ -42,7 +42,7 @@ public class MealTo extends BaseTo {
         return description;
     }
 
-    public int getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
@@ -58,11 +58,11 @@ public class MealTo extends BaseTo {
         this.description = description;
     }
 
-    public void setCalories(int calories) {
-        this.calories = calories;
+    public void setCalories(Integer calories) {
+        this.calories = calories!=null?calories:1000;
     }
 
-    public void setExcess(boolean excess) {
+    public void setExcess(Boolean excess) {
         this.excess = excess;
     }
 
