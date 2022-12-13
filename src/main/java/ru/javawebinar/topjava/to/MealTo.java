@@ -21,12 +21,12 @@ public class MealTo extends BaseTo implements Serializable {
 
     @NotNull
     @Range(min = 10, max = 5000)
-    private Integer calories;
+    private int calories;
 
-    private Boolean excess;
+    private boolean excess;
 
     @ConstructorProperties({"id", "dateTime", "description", "calories", "excess"})
-    public MealTo(Integer id, LocalDateTime dateTime, String description, Integer calories, Boolean excess) {
+    public MealTo(Integer id, LocalDateTime dateTime, String description, int calories, boolean excess) {
         super(id);
         this.dateTime = dateTime;
         this.description = description;
@@ -42,7 +42,7 @@ public class MealTo extends BaseTo implements Serializable {
         return description;
     }
 
-    public Integer getCalories() {
+    public int getCalories() {
         return calories;
     }
 
@@ -58,11 +58,11 @@ public class MealTo extends BaseTo implements Serializable {
         this.description = description;
     }
 
-    public void setCalories(Integer calories) {
-        this.calories = calories!=null?calories:1000;
+    public void setCalories(int calories) {
+        this.calories = calories;
     }
 
-    public void setExcess(Boolean excess) {
+    public void setExcess(boolean excess) {
         this.excess = excess;
     }
 

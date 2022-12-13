@@ -46,7 +46,6 @@ class RootControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("meals"))
-                .andExpect(forwardedUrl("/WEB-INF/jsp/meals.jsp"))
-                .andExpect(model().attribute("meals", getTos(meals, 2000)));
+                .andExpect(forwardedUrl("/WEB-INF/jsp/meals.jsp"));
     }
 }

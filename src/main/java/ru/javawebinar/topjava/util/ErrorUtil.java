@@ -8,13 +8,15 @@ import java.util.stream.Collectors;
 public class ErrorUtil {
     public static ResponseEntity<String> checkFieldErrorsAndDo(BindingResult result, Runnable runnable){
         if (result.hasErrors()) {
-            String errorFieldsMsg = result.getFieldErrors().stream()
-                    .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                    .collect(Collectors.joining("<br>"));
-            return ResponseEntity.unprocessableEntity().body(errorFieldsMsg);
+            return ResponseEntity.unprocessableEntity().body(getFieldErrorsMsg(result));
         }
         runnable.run();
         return ResponseEntity.ok().build();
     }
 
+    private static String getFieldErrorsMsg(BindingResult result){
+        return result.getFieldErrors().stream()
+                .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
+                .collect(Collectors.joining("<br>"));
+    }
 }

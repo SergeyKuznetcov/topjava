@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -88,8 +89,8 @@ public class Meal extends AbstractBaseEntity {
         this.description = description;
     }
 
-    public void setCalories(int calories) {
-        this.calories = calories;
+    public void setCalories(Integer calories) {
+        this.calories = calories != null ? calories : MealsUtil.DEFAULT_CALORIES;
     }
 
     public User getUser() {
